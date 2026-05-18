@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microteaching FL Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050816;
+  --card:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.12);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --primary:#4ade80;
+  --secondary:#22d3ee;
+  --shadow:0 24px 80px rgba(0,0,0,.45);
+  --radius:28px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top, rgba(34,211,238,.16), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(74,222,128,.12), transparent 28%),
+    linear-gradient(180deg, #050816 0%, #060b18 100%);
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:80px 80px;
+  opacity:.22;
+  pointer-events:none;
+  mask-image:radial-gradient(circle at center, black 35%, transparent 100%);
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  overflow:hidden;
+}
+.glow{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:.22;
+}
+.glow.one{
+  width:520px;height:520px;background:#22d3ee;
+  top:-120px;left:-120px;
+  animation:floatOne 16s ease-in-out infinite alternate;
+}
+.glow.two{
+  width:560px;height:560px;background:#4ade80;
+  bottom:-140px;right:-140px;
+  animation:floatTwo 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatOne{
+  from{transform:translate(0,0) scale(1);}
+  to{transform:translate(60px,40px) scale(1.08);}
+}
+@keyframes floatTwo{
+  from{transform:translate(0,0) scale(1);}
+  to{transform:translate(-70px,-50px) scale(.96);}
+}
+
+nav{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(1120px,92vw);
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border:1px solid var(--line);
+  background:rgba(8,12,24,.68);
+  backdrop-filter:blur(22px);
+  border-radius:999px;
+  box-shadow:var(--shadow);
+  z-index:50;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.9rem;
+}
+.brand-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  box-shadow:0 0 24px rgba(34,211,238,.45);
+}
+.nav-right{display:flex;gap:10px;flex-wrap:wrap}
+.nav-btn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  padding:11px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.nav-btn:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.1);
+  border-color:rgba(74,222,128,.35);
+}
+
+section{
+  min-height:100vh;
+  padding:120px 20px 80px;
+  display:flex;
+  align-items:center;
+}
+.container{
+  width:100%;
+  max-width:1120px;
+  margin:0 auto;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:40px;
+  align-items:center;
+}
+.kicker{
+  display:inline-flex;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:#dbeafe;
+  margin-bottom:22px;
+}
+.hero h1{
+  font-size:clamp(3rem,7vw,6.2rem);
+  line-height:.95;
+  letter-spacing:-.05em;
+  background:linear-gradient(90deg,#f8fafc 0%, #4ade80 45%, #22d3ee 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 30px rgba(34,211,238,.12);
+}
+.hero p{
+  margin-top:22px;
+  max-width:620px;
+  color:var(--muted);
+  line-height:1.8;
+  font-size:1.05rem;
+}
+.hero-actions{
+  display:flex;
+  gap:14px;
+  margin-top:28px;
+  flex-wrap:wrap;
+}
+.primary-btn,.ghost-btn{
+  border:none;
+  border-radius:999px;
+  padding:14px 20px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.primary-btn{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#04111f;
+  box-shadow:0 18px 40px rgba(34,211,238,.18);
+}
+.primary-btn:hover{transform:translateY(-3px) scale(1.01)}
+.ghost-btn{
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  border:1px solid var(--line);
+}
+.ghost-btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.09)}
+
+.hero-panel{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:34px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  backdrop-filter:blur(18px);
+}
+.hero-panel img{
+  width:100%;
+  display:block;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.panel-caption{
+  margin-top:16px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:22px;
+}
+.card{
+  position:relative;
+  overflow:hidden;
+  padding:28px;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.1);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+  transition:.35s ease;
+  cursor:pointer;
+}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at top left, rgba(34,211,238,.18), transparent 35%);
+  opacity:0;
+  transition:.35s ease;
+}
+.card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(34,211,238,.35);
+  box-shadow:0 28px 70px rgba(0,0,0,.4);
+}
+.card:hover::after{opacity:1}
+.badge-num{
+  width:54px;height:54px;border-radius:16px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#04111f;font-weight:900;
+  margin-bottom:18px;
+}
+.card h2{font-size:1.3rem;margin-bottom:10px}
+.card p{color:var(--muted);line-height:1.75}
+
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.52);
+  backdrop-filter:blur(14px);
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:200;
+}
+.popup-overlay.active{opacity:1;visibility:visible}
+
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(.92);
+  width:min(920px,92vw);
+  height:min(84vh,900px);
+  background:linear-gradient(180deg, rgba(10,15,25,.96), rgba(6,10,18,.96));
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:34px;
+  box-shadow:0 35px 100px rgba(0,0,0,.6);
+  opacity:0;
+  visibility:hidden;
+  z-index:300;
+  overflow:hidden;
+  transition:.35s cubic-bezier(.2,.8,.2,1);
+}
+.popup.active{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,-50%) scale(1);
+}
+.popup-top{
+  padding:24px 28px 0;
+}
+.popup-progress{
+  height:4px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.popup-progress span{
+  display:block;
+  height:100%;
+  width:25%;
+  background:linear-gradient(90deg,#4ade80,#22d3ee);
+  border-radius:999px;
+  transition:.35s ease;
+}
+.popup-tabs{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.popup-tab{
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#cbd5e1;
+  padding:10px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.popup-tab:hover,
+.popup-tab.active{
+  background:linear-gradient(135deg, rgba(74,222,128,.2), rgba(34,211,238,.18));
+  border-color:rgba(34,211,238,.35);
+  color:#fff;
+}
+.popup-content{
+  padding:28px;
+  height:calc(100% - 150px);
+  overflow:auto;
+}
+.popup-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:22px;
+  margin-top:18px;
+  transition:.3s ease;
+}
+.popup-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(74,222,128,.28);
+}
+.popup-title{
+  font-size:2.2rem;
+  margin-bottom:14px;
+}
+.popup p,.popup li{
+  color:#cbd5e1;
+  line-height:1.8;
+}
+.popup-list{
+  margin-top:14px;
+  padding-left:18px;
+  display:grid;
+  gap:8px;
+}
+.popup-media{
+  width:100%;
+  border-radius:20px;
+  display:block;
+  margin-top:16px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.popup-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 28px 28px;
+}
+.popup-nav{
+  border:none;
+  padding:12px 18px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.popup-nav:hover{transform:translateY(-2px);background:rgba(255,255,255,.11)}
+.popup-nav.primary{
+  background:linear-gradient(135deg,#4ade80,#22d3ee);
+  color:#04111f;
+  font-weight:800;
+}
+
+.close-btn{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:44px;height:44px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  transition:.25s ease;
+  z-index:2;
+}
+.close-btn:hover{background:#ef4444;transform:rotate(90deg)}
+
+footer{
+  padding:40px 20px 70px;
+  text-align:center;
+  color:var(--muted);
+}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:640px){
+  nav{border-radius:24px}
+  .hero h1{font-size:3.2rem}
+  section{padding-top:110px}
+  .popup{width:94vw;height:88vh;border-radius:28px}
+  .popup-content{padding:22px}
+  .popup-footer{padding:0 22px 22px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+</div>
+
+<nav>
+  <div class="brand"><span class="brand-dot"></span> Microteaching FL Studio</div>
+  <div class="nav-right">
+    <button class="nav-btn" onclick="playMusic()">Audio</button>
+    <button class="nav-btn" onclick="document.querySelector('.cards').scrollIntoView({behavior:'smooth'})">Materi</button>
+    <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</button>
+    <button class="nav-btn" id="fsBtnFullscreen" onclick="toggleFullscreen()">📺 Fullscreen</button>
+  </div>
+</nav>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<section>
+  <div class="container hero">
+    <div>
+      <div class="kicker">Produksi Musik Digital</div>
+      <h1>Pengenalan DAW FL Studio</h1>
+      <p>Pembelajaran dasar Digital Audio Workstation menggunakan FL Studio untuk peserta didik kelas XI semester ganjil.</p>
+      <div class="hero-actions">
+        <button class="primary-btn" onclick="document.querySelector('.cards').scrollIntoView({behavior:'smooth'})">Mulai Materi</button>
+        <button class="ghost-btn" onclick="openPopup('daw', this)">Lihat DAW</button>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <img src="logofl2.png" alt="FL Studio">
+      <div class="panel-caption">FL Studio dikenal sebagai salah satu DAW populer untuk membuat, mengedit, dan menyusun musik digital.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cards">
+  <div class="container grid">
+    <div class="card" onclick="openPopup('musikDigital', this)">
+      <div class="badge-num">01</div>
+      <h2>Musik Digital</h2>
+      <p>Pengertian dasar musik digital dan penerapannya dalam dunia modern.</p>
+    </div>
+    <div class="card" onclick="openPopup('daw', this)">
+      <div class="badge-num">02</div>
+      <h2>Apa itu DAW?</h2>
+      <p>Mengenal Digital Audio Workstation dan contoh software DAW populer.</p>
+    </div>
+    <div class="card" onclick="openPopup('flstudio', this)">
+      <div class="badge-num">03</div>
+      <h2>FL Studio</h2>
+      <p>FL Studio adalah software favorit dalam produksi musik digital.</p>
+    </div>
+    <div class="card" onclick="openPopup('fitur', this)">
+      <div class="badge-num">04</div>
+      <h2>Fitur FL Studio</h2>
+      <p>Mengenal fitur utama FL Studio beserta contoh visual penggunaannya.</p>
+    </div>
+    <div class="card" onclick="openPopup('beat', this)">
+      <div class="badge-num">05</div>
+      <h2>Contoh Beat</h2>
+      <p>Melihat contoh sederhana pembuatan beat menggunakan FL Studio.</p>
+    </div>
+  </div>
+</section>
+
+<div class="popup-overlay" id="popupOverlay"></div>
+
+<div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" tabindex="-1">
+  <button class="close-btn" id="closeBtn" onclick="closePopup()" aria-label="Tutup popup">✕</button>
+
+  <div class="popup-top">
+    <div class="popup-progress" aria-hidden="true">
+      <span id="popupProgress"></span>
+    </div>
+
+    <div class="popup-tabs" id="popupTabs" role="tablist" aria-label="Navigasi materi"></div>
+  </div>
+
+  <div class="popup-content" id="popupContent"></div>
+
+  <div class="popup-footer" id="popupFooter">
+    <button class="popup-nav" id="prevBtn" onclick="prevPopupTab()">← Prev</button>
+    <button class="popup-nav primary" id="nextBtn" onclick="nextPopupTab()">Next →</button>
+  </div>
+</div>
+
+<section>
+  <div class="container hero">
+    <div>
+        <h1>KESIMPULAN</h1>
+        <h2> Musik Digital Mudah Dipelajari</h2>
+        <p>Peserta didik mampu memahami pengertian dasar DAW dan mengenal fungsi dasar pada FL Studio.</p>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Microteaching Produksi Musik Digital - @Yansu08</footer>
+
+<script>
+const music = document.getElementById("music");
+const popup = document.getElementById("popup");
+const overlay = document.getElementById("popupOverlay");
+const content = document.getElementById("popupContent");
+const progress = document.getElementById("popupProgress");
+const tabsWrap = document.getElementById("popupTabs");
+const footer = document.getElementById("popupFooter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const closeBtn = document.getElementById("closeBtn");
+
+let activePopup = null;
+let activeTabIndex = 0;
+let lastTrigger = null;
+let currentTabs = [];
+
+const popupData = {
+  musikDigital: {
+    tabs: ["ringkasan", "contoh"],
+    titles: {
+      ringkasan: "Musik Digital",
+      contoh: "Contoh Musik Digital"
+    },
+    content: {
+      ringkasan: `
+        <div class="popup-card">
+          <h1 class="popup-title" id="popupTitle">Musik Digital</h1>
+          <p>Musik digital adalah musik yang dibuat dengan bantuan komputer, laptop, atau perangkat digital lainnya.</p>
+        </div>
+      `,
+      contoh: `
+        <div class="popup-card">
+          <h2>Contoh Pemanfaatan</h2>
+          <ul class="popup-list">
+            <li>Lagu pop.</li>
+            <li>EDM.</li>
+            <li>Musik film.</li>
+            <li>Backsound video.</li>
+            <li>Musik tradisional modern.</li>
+          </ul>
+        </div>
+      `
+    }
+  },
+
+  daw: {
+    tabs: ["fitur", "contoh", "media"],
+    titles: {
+      fitur: "Apa itu DAW?",
+      contoh: "Contoh DAW",
+      media: "Visual DAW"
+    },
+    content: {
+      fitur: `
+        <div class="popup-card">
+          <h1 class="popup-title" id="popupTitle">Digital Audio Workstation</h1>
+          <p>DAW adalah software untuk </p>
+          <ul class="popup-list">
+            <li>merekam suara</li> 
+            <li>mengedit audio</li>
+            <li>menyusun instrumen
+            <li>mixing dan mastering audio</li>
+            <li>dan menghasilkan musik</li>
+        </div>
+      `,
+      contoh: `
+        <div class="popup-card">
+          <h2>Contoh DAW Populer</h2>
+          <ul class="popup-list">
+            <li>FL Studio.</li>
+            <li>Ableton Live.</li>
+            <li>Logic Pro.</li>
+            <li>Cubase.</li>
+            <li>GarageBand.</li>
+          </ul>
+        </div>
+      `,
+      media: `
+        <div class="popup-card">
+          <h2>Visual</h2>
+          <img class="popup-media" src="5logo.png" alt="FL Studio logo">
+        </div>
+      `
+    }
+  },
+
+  flstudio: {
+    tabs: ["fitur", "media"],
+    titles: {
+      fitur: "FL Studio",
+      media: "Visual FL Studio"
+    },
+    content: {
+      fitur: `
+        <div class="popup-card">
+          <h1 class="popup-title" id="popupTitle">FL Studio</h1>
+          <ul class="popup-list">
+            <li>Mudah digunakan untuk pemula.</li>
+            <li>Fiturnya lengkap.</li>
+            <li>Banyak tutorial di internet.</li>
+            <li>Cocok untuk berbagai genre musik.</li>
+          </ul>
+        </div>
+      `,
+      media: `
+        <div class="popup-card">
+          <h2>Visual</h2>
+          <img class="popup-media" src="VFL.png" alt="FL Studio logo">
+        </div>
+      `
+    }
+  },
+
+  fitur: {
+    tabs: ["ringkasan", "fitur"],
+    titles: {
+      ringkasan: "Fitur Dasar FL Studio",
+      fitur: "Bagian Utama FL Studio"
+    },
+    content: {
+      ringkasan: `
+        <div class="popup-card">
+          <h1 class="popup-title" id="popupTitle">Fitur Dasar FL Studio</h1>
+          <p>Beberapa bagian penting yang perlu dikenali adalah Channel Rack, Playlist, Mixer, Browser, dan Tempo.</p>
+        </div>
+      `,
+      fitur: `
+        <div class="popup-card">
+          <h2>Bagian Utama</h2>
+          <ul class="popup-list">
+            <li><strong>Channel Rack</strong> → menyusun beat.</li>
+                <video class="popup-media" autoplay loop muted playsinline>
+                    <source src="channelrack.mp4" type="video/mp4">
+                </video>
+            <li><strong>Playlist</strong> → menyusun lagu.</li>
+                <video class="popup-media" autoplay loop muted playsinline>
+                    <source src="playlist.mp4" type="video/mp4">
+                </video>
+            <li><strong>Mixer</strong> → mengatur volume dan efek.</li>
+                <video class="popup-media" autoplay loop muted playsinline>
+                    <source src="mixer.mp4" type="video/mp4">
+                </video>
+            <li><strong>Browser</strong> → menyimpan sample suara.</li>
+                <video class="popup-media" autoplay loop muted playsinline>
+                    <source src="browser.mp4" type="video/mp4">
+                </video>
+            <li><strong>Tempo</strong> → mengatur cepat lambat lagu.</li>
+                <video class="popup-media" autoplay loop muted playsinline>
+                    <source src="tempo.mp4" type="video/mp4">
+                </video>
+          </ul>
+        </div>
+      `
+    }
+  },
+
+  beat: {
+    tabs: ["media"],
+    titles: {
+      media: "Contoh Beat"
+    },
+    content: {
+      media: `
+        <div class="popup-card">
+          <h1 class="popup-title" id="popupTitle">Contoh Beat Sederhana</h1>
+          <video class="popup-media" controls playsinline>
+            <source src="beatsederhana.mp4" type="video/mp4">
+          </video>
+        </div>
+      `
+    }
+  }
+};
+
+function playMusic(){
+  if(music.paused) music.play();
+  else music.pause();
+}
+
+function openPopup(type, trigger){
+  activePopup = type;
+  activeTabIndex = 0;
+  lastTrigger = trigger || document.activeElement;
+  currentTabs = popupData[type]?.tabs || [];
+  document.body.style.overflow = "hidden";
+  popup.classList.add("active");
+  overlay.classList.add("active");
+  renderTabs();
+  updatePopup();
+  setTimeout(() => closeBtn.focus(), 80);
+}
+
+function closePopup(){
+  popup.classList.remove("active");
+  overlay.classList.remove("active");
+  document.body.style.overflow = "";
+  if(lastTrigger && typeof lastTrigger.focus === "function") lastTrigger.focus();
+}
+
+function renderTabs(){
+  tabsWrap.innerHTML = "";
+  const data = popupData[activePopup];
+  if(!data) return;
+
+  currentTabs.forEach((tabName, index) => {
+    const btn = document.createElement("button");
+    btn.className = "popup-tab";
+    if(index === activeTabIndex) btn.classList.add("active");
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-selected", index === activeTabIndex ? "true" : "false");
+    btn.textContent = capitalize(tabName);
+    btn.onclick = () => setPopupTab(tabName);
+    tabsWrap.appendChild(btn);
+  });
+
+  footer.style.display = currentTabs.length > 1 ? "flex" : "none";
+}
+
+function setPopupTab(tab){
+  const idx = currentTabs.indexOf(tab);
+  if(idx === -1) return;
+  activeTabIndex = idx;
+  updatePopup();
+}
+
+function nextPopupTab(){
+  if(currentTabs.length <= 1) return;
+  activeTabIndex = (activeTabIndex + 1) % currentTabs.length;
+  updatePopup();
+}
+
+function prevPopupTab(){
+  if(currentTabs.length <= 1) return;
+  activeTabIndex = (activeTabIndex - 1 + currentTabs.length) % currentTabs.length;
+  updatePopup();
+}
+
+function updatePopup(){
+  const data = popupData[activePopup];
+  if(!data) return;
+
+  const tab = currentTabs[activeTabIndex];
+  content.innerHTML = data.content[tab] || `<div class="popup-card"><p>Konten belum tersedia.</p></div>`;
+
+  const title = data.titles?.[tab] || "Materi";
+  popup.setAttribute("aria-labelledby", "popupTitle");
+
+  [...tabsWrap.querySelectorAll(".popup-tab")].forEach((btn, i) => {
+    const active = i === activeTabIndex;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", active ? "true" : "false");
+  });
+
+  progress.style.width = `${currentTabs.length > 1 ? ((activeTabIndex + 1) / currentTabs.length) * 100 : 100}%`;
+
+  if(prevBtn) prevBtn.style.display = currentTabs.length > 1 ? "inline-flex" : "none";
+  if(nextBtn) nextBtn.style.display = currentTabs.length > 1 ? "inline-flex" : "none";
+}
+
+function capitalize(text){
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+overlay.addEventListener("click", closePopup);
+
+document.addEventListener("keydown", (e) => {
+  const isOpen = popup.classList.contains("active");
+  if(e.key === "Escape" && isOpen) closePopup();
+  if(!isOpen) return;
+  if(e.key === "ArrowRight") nextPopupTab();
+  if(e.key === "ArrowLeft") prevPopupTab();
+
+  if(e.key === "Tab"){
+    const focusables = popup.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const nodes = [...focusables].filter(el => !el.disabled && el.offsetParent !== null);
+    if(nodes.length === 0) return;
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    if(e.shiftKey && document.activeElement === first){
+      e.preventDefault();
+      last.focus();
+    }else if(!e.shiftKey && document.activeElement === last){
+      e.preventDefault();
+      first.focus();
+    }
+  }
+});
+
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  } else if (document.documentElement.webkitRequestFullscreen) {
+    document.documentElement.webkitRequestFullscreen(); // Safari
+  } else if (document.documentElement.mozRequestFullScreen) {
+    document.documentElement.mozRequestFullScreen();   // Firefox
+  } else if (document.documentElement.msRequestFullscreen) {
+    document.documentElement.msRequestFullscreen();    // IE/Edge
+  }
+}
+</script>
+
+</body>
+</html>
